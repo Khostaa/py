@@ -1,6 +1,8 @@
 # **Python**
 
-This repo contains :snake: projects as well as some works done on pyOpenGL.
+This repo contains some :snake: projects as well as some works done on pyOpenGL.
 
-> Thanks for visiting!
+
+
+> Thanks for visiting!    
 > Have a nice day!
