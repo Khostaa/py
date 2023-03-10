@@ -63,7 +63,7 @@ glfw.set_window_size_callback(window, window_resize)
 glfw.make_context_current(window)
 
 # load here the 3d meshes
-bullet_indices, bullet_buffer = ObjLoader.load_model("meshes/new.obj")
+bullet_indices, bullet_buffer = ObjLoader.load_model("meshes/bullet.obj")
 
 
 shader = compileProgram(compileShader(vertex_src, GL_VERTEX_SHADER), compileShader(fragment_src, GL_FRAGMENT_SHADER))
@@ -93,7 +93,7 @@ glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,bullet_buffer.itemsize * 8, ctype
 glEnableVertexAttribArray(2)
 
 textures = glGenTextures(2)
-load_texture("meshes/main.png", textures[0])
+load_texture("meshes/Untitled.png", textures[0])
 
 
 glUseProgram(shader)
