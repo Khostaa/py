@@ -1,6 +1,6 @@
 # **Python**
 
-This repo contains some :snake: projects as well as some works done on pyOpenGL.
+This repo contains some :snake: projects as well as some works done in pyOpenGL. :rocket:
 
 
 
