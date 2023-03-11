@@ -45,11 +45,12 @@ def window_resize(window, width, height):
 if not glfw.init():
     raise Exception("glfw can not be initialized!")
 
-# creating the window
+# creating the window 1280/720
 window = glfw.create_window(1280, 720, "My OpenGL window", None, None)
 
 # check if window was created
 if not window:
+
     glfw.terminate()
     raise Exception("glfw window can not be created!")
 
@@ -63,7 +64,7 @@ glfw.set_window_size_callback(window, window_resize)
 glfw.make_context_current(window)
 
 # load here the 3d meshes
-bullet_indices, bullet_buffer = ObjLoader.load_model("meshes/bullet.obj")
+bullet_indices, bullet_buffer = ObjLoader.load_model("meshes/main.obj")
 
 
 shader = compileProgram(compileShader(vertex_src, GL_VERTEX_SHADER), compileShader(fragment_src, GL_FRAGMENT_SHADER))
@@ -93,7 +94,10 @@ glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,bullet_buffer.itemsize * 8, ctype
 glEnableVertexAttribArray(2)
 
 textures = glGenTextures(2)
-load_texture("meshes/Untitled.png", textures[0])
+load_texture("meshes/tip.jpg", textures[0])
+
+
+
 
 
 glUseProgram(shader)
@@ -103,7 +107,7 @@ glEnable(GL_BLEND)
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 projection = pyrr.matrix44.create_perspective_projection_matrix(45, 1280 / 720, 0.1, 100)
-bullet_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -5, -10]))
+bullet_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0,-7.5, -10]))
 
 # eye, target, up
 view = pyrr.matrix44.create_look_at(pyrr.Vector3([0, 0, 8]), pyrr.Vector3([0, 0, 0]), pyrr.Vector3([0, 1, 0]))
@@ -129,9 +133,9 @@ while not glfw.window_should_close(window):
     glBindTexture(GL_TEXTURE_2D, textures[0])
     glUniformMatrix4fv(model_loc, 1, GL_FALSE, model)
     glDrawArrays(GL_TRIANGLES, 0, len(bullet_indices))
-    # glDrawElements(GL_TRIANGLES, len(bullet_indices), GL_UNSIGNED_INT, None)
+    #glDrawElements(GL_TRIANGLES, len(bullet_indices), GL_UNSIGNED_INT, None)
 
-    # rot_y = pyrr.Matrix44.from_y_rotation(-0.8 * glfw.get_time())
+    rot_y = pyrr.Matrix44.from_y_rotation(-0.8 * glfw.get_time())
     # model = pyrr.matrix44.multiply(rot_y, monkey_pos)
 
 
