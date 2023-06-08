@@ -45,12 +45,11 @@ def window_resize(window, width, height):
 if not glfw.init():
     raise Exception("glfw can not be initialized!")
 
-# creating the window 1280/720
-window = glfw.create_window(1280, 720, "My OpenGL window", None, None)
+# creating the window
+window = glfw.create_window(1080, 720, "My OpenGL window", None, None)
 
 # check if window was created
 if not window:
-
     glfw.terminate()
     raise Exception("glfw window can not be created!")
 
@@ -64,7 +63,7 @@ glfw.set_window_size_callback(window, window_resize)
 glfw.make_context_current(window)
 
 # load here the 3d meshes
-bullet_indices, bullet_buffer = ObjLoader.load_model("meshes/main.obj")
+bullet_indices, bullet_buffer = ObjLoader.load_model("meshes/finalbullet.obj")
 
 
 shader = compileProgram(compileShader(vertex_src, GL_VERTEX_SHADER), compileShader(fragment_src, GL_FRAGMENT_SHADER))
@@ -90,15 +89,12 @@ glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, bullet_buffer.itemsize * 8, ctyp
 glEnableVertexAttribArray(1)
 glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, bullet_buffer.itemsize * 8, ctypes.c_void_p(12))
 # bullet normals
-glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE,bullet_buffer.itemsize * 8, ctypes.c_void_p(20))
+glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, bullet_buffer.itemsize * 8, ctypes.c_void_p(20))
 glEnableVertexAttribArray(2)
 
+
 textures = glGenTextures(2)
-load_texture("meshes/tip.jpg", textures[0])
-
-
-
-
+load_texture("meshes/base.jpg", textures[0])
 
 glUseProgram(shader)
 glClearColor(0, 0.1, 0.1, 1)
@@ -107,10 +103,10 @@ glEnable(GL_BLEND)
 glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
 
 projection = pyrr.matrix44.create_perspective_projection_matrix(45, 1280 / 720, 0.1, 100)
-bullet_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0,-7.5, -10]))
+bullet_pos = pyrr.matrix44.create_from_translation(pyrr.Vector3([0, -8, -10]))
 
 # eye, target, up
-view = pyrr.matrix44.create_look_at(pyrr.Vector3([0, 0, 8]), pyrr.Vector3([0, 0, 0]), pyrr.Vector3([0, 1, 0]))
+view = pyrr.matrix44.create_look_at(pyrr.Vector3([0, 0, 10]), pyrr.Vector3([0, 0,0 ]), pyrr.Vector3([0, 1, 0]))
 
 model_loc = glGetUniformLocation(shader, "model")
 proj_loc = glGetUniformLocation(shader, "projection")
@@ -128,16 +124,13 @@ while not glfw.window_should_close(window):
     rot_y = pyrr.Matrix44.from_y_rotation(0.8 * glfw.get_time())
     model = pyrr.matrix44.multiply(rot_y, bullet_pos)
 
-    # draw the bullet
+    # draw the bullet character
     glBindVertexArray(VAO[0])
     glBindTexture(GL_TEXTURE_2D, textures[0])
     glUniformMatrix4fv(model_loc, 1, GL_FALSE, model)
     glDrawArrays(GL_TRIANGLES, 0, len(bullet_indices))
-    #glDrawElements(GL_TRIANGLES, len(bullet_indices), GL_UNSIGNED_INT, None)
 
     rot_y = pyrr.Matrix44.from_y_rotation(-0.8 * glfw.get_time())
-    # model = pyrr.matrix44.multiply(rot_y, monkey_pos)
-
 
     glfw.swap_buffers(window)
 
